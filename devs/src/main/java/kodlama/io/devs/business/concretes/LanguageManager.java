@@ -1,8 +1,9 @@
 package kodlama.io.devs.business.concretes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -12,29 +13,44 @@ import kodlama.io.devs.business.requests.DeleteLanguageRequests;
 import kodlama.io.devs.business.requests.UpdateLanguageRequests;
 import kodlama.io.devs.business.responses.GetAllLanguageResponses;
 import kodlama.io.devs.dataAccess.abstracts.LanguageRepository;
+import kodlama.io.devs.dataAccess.abstracts.TechRepository;
 import kodlama.io.devs.entities.concretes.Language;
+import kodlama.io.devs.entities.concretes.Tech;
 
 @Service
 public class LanguageManager implements LanguageService {
 
 	private LanguageRepository languageRepository;
-
-	public LanguageManager(LanguageRepository languageRepository) {
+	private TechRepository techRepository;
+	
+	public LanguageManager(LanguageRepository languageRepository, TechRepository techRepository) {
 		super();
 		this.languageRepository = languageRepository;
+		this.techRepository = techRepository;
 	}
 
 	@Override
 	public List<GetAllLanguageResponses> getAll() {
 		List<Language> languages = languageRepository.findAll();
 		List<GetAllLanguageResponses> languageResponses = new ArrayList<>();
-
+		
+		Map<Integer, String> techs;
+		
 		for (Language lang : languages) {
+			techs = new HashMap<>();
 			GetAllLanguageResponses responseItem = new GetAllLanguageResponses();
 			responseItem.setId(lang.getId());
 			responseItem.setName(lang.getName());
+			
+			for(Tech tech : techRepository.findAll()) {
+				if(tech.getLanguage() == lang) {
+					techs.put(tech.getId(), tech.getName());
+				}
+			}
+			
+			responseItem.setTechs(techs);
+			
 			languageResponses.add(responseItem);
-
 		}
 
 		return languageResponses;
@@ -60,8 +76,8 @@ public class LanguageManager implements LanguageService {
 	}
 
 	@Override
-	public Optional<Language> getById(int id) {
-		return languageRepository.findById(id);
+	public Language getById(int id) {
+		return languageRepository.findById(id).orElseThrow();
 
 	}
 

@@ -1,7 +1,6 @@
 package kodlama.io.devs.webApi;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,7 +38,7 @@ public class LanguagesController {
 	}
 	
 	@GetMapping("/getbyID")
-	Optional<Language> getById(int id) {
+	Language getById(int id) {
 		return languageService.getById(id);
 	}
 	

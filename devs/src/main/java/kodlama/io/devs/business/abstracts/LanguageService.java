@@ -1,7 +1,6 @@
 package kodlama.io.devs.business.abstracts;
 
 import java.util.List;
-import java.util.Optional;
 
 import kodlama.io.devs.business.requests.CreateLanguageRequests;
 import kodlama.io.devs.business.requests.DeleteLanguageRequests;
@@ -12,7 +11,7 @@ import kodlama.io.devs.entities.concretes.Language;
 public interface LanguageService {
 	List<GetAllLanguageResponses> getAll();
 	void add(CreateLanguageRequests createLanguageRequests);
-	Optional<Language> getById(int id );
+	Language getById(int id );
 	void delete(DeleteLanguageRequests deleteLanguageRequests);
 	void update(UpdateLanguageRequests updateLanguageRequests);
 }
