@@ -46,18 +46,15 @@ public class TechManager implements TechService {
 	public void add(@NotNull CreateTechRequests createTechRequests) {
 		Tech tech = new Tech();
 		tech.setName(createTechRequests.getName());
-				
+
 		for (Language language : languageRepository.findAll()) {
-			if(createTechRequests.getLanguage_id() == language.getId()) {
+			if (createTechRequests.getLanguage_id() == language.getId()) {
 				tech.setLanguage(language);
 			}
 		}
-		
-		techRepository.save(tech);
-		
-		
 
-		
+		techRepository.save(tech);
+
 	}
 
 	@Override
@@ -70,11 +67,9 @@ public class TechManager implements TechService {
 	@Override
 	public void update(UpdateTechRequests updateTechRequests) {
 
-		Tech tech = new Tech();
-		tech.setId(updateTechRequests.getId());
-		tech.setName(updateTechRequests.getName());
-		tech.setLanguage(updateTechRequests.getLanguage());
+		Tech tech = techRepository.findById(updateTechRequests.getId()).orElseThrow();
 
+		tech.setName(updateTechRequests.getName());
 		techRepository.save(tech);
 
 	}
